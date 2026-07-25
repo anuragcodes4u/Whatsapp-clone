@@ -40,6 +40,7 @@ export default function App() {
   const [activeId, setActiveId] = useState<string>("");
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -90,7 +91,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className={`app ${showChat ? "show-chat" : ""}`}>
       <aside className="sidebar">
         <div className="sidebar-header">
           <h1>Chats</h1>
@@ -104,7 +105,10 @@ export default function App() {
               <li
                 key={c.id}
                 className={`conversation-item ${isActive ? "active" : ""}`}
-                onClick={() => setActiveId(c.id)}
+                onClick={() => {
+                  setActiveId(c.id);
+                  setShowChat(true);
+                }}
               >
                 <div className="avatar">{user?.avatar ?? "?"}</div>
                 <div className="conversation-content">
@@ -124,6 +128,9 @@ export default function App() {
         {activeUser ? (
           <>
             <header className="chat-header">
+              <button className="back-btn" onClick={() => setShowChat(false)} aria-label="Back">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
+              </button>
               <div className="avatar">{activeUser.avatar}</div>
               <div>
                 <h2>{activeUser.name}</h2>
